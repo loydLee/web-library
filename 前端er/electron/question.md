@@ -1,4 +1,5 @@
 # 遇到的问题
+[TOC]
 ## electron拖拽问题
 
 electron存在和浏览器一样拖入文件直接打开的问题
@@ -59,3 +60,12 @@ export default {
 -webkit-app-region: no-drag;
 ```
 或者自己编写mouse事件
+
+## electron-vue中使用element-ui部分组件无法渲染
+> [参考](https://blog.csdn.net/yuqiuyao/article/details/91980109)
+
+常见的一个element table表格组件和button，但是table组件并没有渲染, electron-vue文档上提出使用.electron-vue/webpack.renderer.config.js文件进行处理
+
+> 白名单里的外部组件
+
+我们可以将特定的模块列入白名单，而不是将它视为webpack的externals,大多数情况下，我们不需要使用这个功能，但是某些情况下，比如提供了原始.vue组件的vue ui库，我们需要将他们列入白名单，以至于vue-loader能够进行编译，另一个情况是使用webpack的alias。
