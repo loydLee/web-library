@@ -178,10 +178,16 @@ ipcRenderer.on('img-files', (event, files) => {
 ### lowdb
 - 初始化
 
+**注意**：lowdb每次调用数据的时候需要显示调用其read方法，保证各个进程获取到的数据一致性
+
 ***tips***：为了操作fs更方便，不妨安装一个[fs-extra](https://github.com/jprichardson/node-fs-extra)。
 
 创建一个datastore.js文件：
 ```JavaScript
+/**
+ * lowdb 设置
+*/
+
 import Datastore from 'lowdb'
 import LodashId from 'lodash-id'
 import FileSync from 'lowdb/adapters/FileSync'
@@ -189,37 +195,41 @@ import path from 'path'
 import fs from 'fs-extra'
 import { remote, app } from 'electron'
 
+if (process.env.NODE_ENV !== 'development') {
+  global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
+}
+if (process.env.DEBUG_ENV === 'debug') {
+  global.__static = path.join(__dirname, '../../static').replace(/\\/g, '\\\\')
+}
+
 const APP = process.type === 'renderer' ? remote.app : app
-const STORE_PATH = APP.getPath('userData')
+const STORE_PATH = APP.getPath('userData') + '/hdCloud' // 定义存储地址根路径
 
-if (process.type !== 'renderer') {
-  if (!fs.pathExistsSync(STORE_PATH)) {
-    fs.mkdirpSync(STORE_PATH)
-  }
+if (!fs.pathExistsSync(STORE_PATH)) { // 是否存在根路径，不存在则创建
+  fs.mkdirpSync(STORE_PATH)
 }
 
-const adapter = new FileSync(path.join(STORE_PATH, '/data.json'))
+const scheme = Datastore(new FileSync(path.join(STORE_PATH, '/hdScheme.json'))) // 创建数据库文件
+const config = Datastore(new FileSync(path.join(STORE_PATH, '/hdConfig.json')))
 
-const db = Datastore(adapter)
-db._.mixin(LodashId)
+scheme._.mixin(LodashId)
+config._.mixin(LodashId) // 使用lodashId为每一个新增的记录生成随机数组成的id
 
-if (!db.has('uploaded').value()) {
-  db.set('uploaded', []).write()
+const db = {
+  scheme,
+  config
 }
 
-if (!db.has('picBed').value()) {
-  db.set('picBed', {
-    current: 'weibo'
-  }).write()
+if (!db.config.has('formualList').value()) { // 如果不存在根节点创建
+  db.config.set('formualList', []).write()
 }
 
-if (!db.has('shortKey').value()) {
-  db.set('shortKey', {
-    upload: 'CommandOrControl+Shift+P'
-  }).write()
+if (!db.config.has('templateList').value()) {
+  db.config.set('templateList', []).write()
 }
 
 export default db
+
 ```
 - 基本操作
 
@@ -230,28 +240,52 @@ db.defaults({ posts: [], user: {}, count: 0 })
 ```
 **注意任何写的操作，都必须显式的使用write()方法来保存。**
 
-读取：
+**获取数据库**
+```javascript
+// 获取数据库
+getDB () {
+    db[this.dbName].read()
+    return db[this.dbName].get(this.tableName) // 放回当前实例方便链式调用其他方法
+}
+```
+
+**读取**：
 ```JavaScript
-db.get('posts').value() // []
+getList () {
+    return this.getDB().value()
+}
 ```
 > 还可以用lodash的一些方法来查询你的JSON。
 
 ```JavaScript
-// eg: find()
+// 根据字段查找
 db.get('posts')
   .find({ id: 1 })
   .value()
+getInfoByInfo (info) { // {id: 1}
+    return this.getDB().find(info).value()
+}
+  
+// 根据Id查找
+getInfoById (id) {
+    return this.getDB().getById(id).value()
+}
 ```
 **注意任何读的操作，都必须显式使用value()方法来获取值。**
 
-更新：更新的时候我们可以根据不同的结构来更新
-
+**新增**：
 ```JavaScript
 // 针对对象就用赋值，针对数组就用push()或者insert()（lowdb-id提供的方法）
-db.get('posts').insert({ // 对数组进行insert操作
-  title: 'xxx',
-  content: 'xxxx'
-}).write()
+// 添加信息
+addInfo (info) {
+    this.getDB()
+      .insert(info)
+      .write()
+    return this // 一般新增完毕会返回更新后数据，因此返回实例
+}
+
+
+**更新**：更新的时候我们可以根据不同的结构来更新
 
 // 针对对象可以直接用set()来更新：
 db.set('user.name', 'typicode') // 通过set方法来对对象操作
@@ -266,10 +300,21 @@ db.set('user', {
 db.update('count', n => n + 1) // update方法使用已存在的值来操作
   .write()
 ```
+// 针对对象可以使用assign写入
+```javascript
+// 更新信息
+updateInfo (info) {
+    this.getDB()
+      .getById(info.id)
+      .assign(info)
+      .write()
+    return this
+}
+```
 
 删除:
 ```JavaScript
-// 可以通过remove()方法删除一个符合条件的项：
+// 根据字段进行查找删除
 db.get('posts')
   .remove({ title: 'low!' })
   .write()
@@ -279,9 +324,12 @@ db.unset('user.name')
   .write()
   
 // 也可以通过lodash-id提供的removeById()来删除指定id的项：
-db.get('posts')
-  .removeById(id)
-  .write()
+deleteInfoById (id) {
+    this.getDB()
+      .removeById(id)
+      .write()
+    return this
+}
 ```
 
 ## 跨平台兼容措施
@@ -301,6 +349,7 @@ db.get('posts')
 我们使用node-xlsx插件进行相关操作
 
 - 写入：
+
 ```JavaScript
 const buffer = xlsx.build(this.list)
 const _path = path.join(__dirname, '.', 'result.xlsx')
@@ -313,6 +362,7 @@ console.log('Write to xls has finished')
 ```
 
 - 读取：
+
 ```JavaScript
 const _path = path.join(__dirname, '.', 'result.xlsx')
 // 读xlsx
@@ -326,7 +376,8 @@ console.log(JSON.stringify(obj, null, 2))
 electron同时在主进程和渲染进程中对node.js暴露了所有的接口，需要注意：
 
 - 所有在node中可以使用的api，在electron中依旧可以使用，例如:
-```
+
+```JavaScript
 const fs = require('fs')
 
 const root = fs.readdirSync('/')
@@ -334,4 +385,41 @@ const root = fs.readdirSync('/')
 // 这会打印出磁盘根级别的所有文件
 // 同时包含'/'和'C:\'。
 console.log(root)
+```
+
+读取：
+```JavaScript
+const APP = process.type === 'renderer' ? remote.app : app
+const STORE_PATH = APP.getPath('userData') + '/hdCloud/scheme' // 定义根路径
+
+if (!fs.pathExistsSync(STORE_PATH)) { // 没有则创建
+  fs.mkdirpSync(STORE_PATH)
+}
+
+schemeModule.readFile = function (fileName) {
+  return new Promise((resolve, reject) => {
+    const _path = path.join(STORE_PATH, '.', `${fileName}.json`)
+    if (!fs.pathExistsSync(_path)) {
+      fs.writeFile(_path, JSON.stringify({}))
+      resolve({})
+    } else {
+      fs.readFile(_path, 'utf8', (err, data) => {
+        if (!err) {
+          resolve(JSON.parse(data))
+        } else {
+          reject(err)
+        }
+      })
+    }
+  })
+}
+```
+写入：
+```JavaScript
+schemeModule.writeFile = function (file, fileName) {
+  const _path = path.join(STORE_PATH, '.', `${fileName}.json`)
+  fs.writeFile(_path, JSON.stringify(file), function (err) {
+    if (!err) return '写入成功'
+  })
+}
 ```

@@ -69,3 +69,11 @@ export default {
 > 白名单里的外部组件
 
 我们可以将特定的模块列入白名单，而不是将它视为webpack的externals,大多数情况下，我们不需要使用这个功能，但是某些情况下，比如提供了原始.vue组件的vue ui库，我们需要将他们列入白名单，以至于vue-loader能够进行编译，另一个情况是使用webpack的alias。
+
+## dialog(打开文件或者保存文件)打开后禁用其他位置点击事件(类模态窗效果)
+
+```JavaScript
+dialog- showOpenDialog/showSaveDialog 第一个参数为browserWindow,该参数指定选定窗口，无法使用主进程export方式获取，也无法通过赋值方法保存
+
+获取 > BrowserWindow.getFocusedWindow()
+```
