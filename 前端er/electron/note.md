@@ -423,3 +423,66 @@ schemeModule.writeFile = function (file, fileName) {
   })
 }
 ```
+
+## 利用electron-builder打包
+```JavaScript
+"build": {
+    "productName": "HDcalculator", // 打包出来的软件名
+    "appId": "huidian.calculator.com", // appid
+    "directories": { // 打包输出地址
+      "output": "dist"
+    },
+    "files": [ // 打包排除的文件
+      "dist/electron/**/*",
+      "node_modules/",
+      "package.json"
+    ],
+    "nsis": { // 生成安装包的相关配置
+      "oneClick": false, // 是否一键安装
+      "allowElevation": true, // 允许请求提升。 如果为false，则用户必须使用提升的权限重新启动安装程序。
+      "allowToChangeInstallationDirectory": true, // 允许修改安装目录
+      "installerIcon": "build/icons/icon.ico", // 安装图标
+      "uninstallerIcon": "build/icons/icon.ico", //卸载图标
+      "installerHeaderIcon": "build/icons/icon.ico", // 安装时头部图标
+      "createDesktopShortcut": true, // 创建桌面图标
+      "createStartMenuShortcut": true, // 创建开始菜单图标
+      "shortcutName": "HDcalculator" // 图标名称
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "mac": {
+      "icon": "build/icons/icon.icns" // mac下的图标
+    },
+    "win": {
+      "icon": "build/icons/icon.ico",
+      "target": [
+        {
+          "target": "nsis", // 打包对象
+          "arch": [
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "icon": "build/icons" // linux下的图标
+    }
+  }
+```
+script设置：
+```JavaScript
+"build:package": "electron-builder --win", // 指定打包windows环境
+```
