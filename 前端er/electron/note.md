@@ -484,5 +484,5 @@ schemeModule.writeFile = function (file, fileName) {
 ```
 script设置：
 ```JavaScript
-"build:package": "electron-builder --win", // 指定打包windows环境
+"build:package": "node .electron-vue/build-builder.js && electron-builder --win", // 指定打包windows环境 前面那一段很重要  不加的话会出现打包app打开白屏的情况
 ```

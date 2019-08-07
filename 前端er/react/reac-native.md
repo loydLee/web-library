@@ -68,9 +68,5 @@ componentWillUpdate--在组件接收到新的props或者state但还没有render�
 
 componentDidUpdate--在组件更新完成后立即调用，在初始化时不会被调用
 
-componentWillUnmount--在组件从dom中移除的时候立刻被调用
-
-
-
-  
+componentWillUnmount--在组件从dom中移除的时候立刻被调用  
 ```
