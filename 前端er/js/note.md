@@ -130,5 +130,13 @@ function pageY(elem){
 }
 ```
 
+## element messagebox 确认操作后滑动屏幕闪屏
+通过调用实例的beforeClose-done方法显式关闭弹窗
+```JavaScript
+beforeClose: (action, instance, done) => {
+    done()
+}
+```
+
 
     

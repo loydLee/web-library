@@ -80,7 +80,7 @@ win.restore() 从最小化窗口恢复
 **使用路由hash模式**
 
 ## titlebar实现
-因为默认的tilebar样式一般不会负荷我们的设计，所以很多时候我们会自定义这一部分内容
+因为默认的tilebar样式一般不会符合我们的设计，所以很多时候我们会自定义这一部分内容
 ```
 titleBarStyle: 'hidden'
 ```
