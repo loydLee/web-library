@@ -138,3 +138,46 @@ let strLength: number = (someValue as string).length;
 ```
 
 ## 接口
+```JavaScript
+interface obj {
+    label: string;
+}
+// 声明了一个名叫obj的接口，它有一个label属性并且类型为string得我对象
+```
+- 可选属性
+```JavaScript
+interface obj {
+    color? : string;
+    width? : number;
+}
+```
+- 只读属性
+```JavaScript
+interface obj {
+    readonly x: number;
+    readonly y: string；
+}
+```
+**注意：**ts具有ReadonlyArray<T>类型，与Array<T>相似，只是把所有的可变方法去掉，以确保数组创建后不能被修改
+```JavaScript
+let a: number[] = [1, 2, 3, 4];
+let ro: ReadonlyArray<number> = a;
+ro[0] = 12; // error!
+ro.push(5); // error!
+ro.length = 100; // error!
+a = ro; // error!
+就算把整个ReadonlyArray赋值到一个普通数组也不可以，但是可以通过类型断言进行重写：
+a = ro as number[];
+```
+**readonly or const**
+变量：const 属性：readonly
+
+- 字符串索引签名
+```JavaScript
+interface obj {
+    color?: string;
+    width?: number;
+    [propName: string]: any;
+}
+表示obj可以有任意数量的属性，并且只要他们不是color或者width,就无所谓他们的类型是什么
+```
