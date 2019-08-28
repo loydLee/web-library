@@ -142,7 +142,7 @@ let strLength: number = (someValue as string).length;
 interface obj {
     label: string;
 }
-// 声明了一个名叫obj的接口，它有一个label属性并且类型为string得我对象
+// 声明了一个名叫obj的接口，它有一个label属性并且类型为string的对象
 ```
 - 可选属性
 ```JavaScript
@@ -180,4 +180,100 @@ interface obj {
     [propName: string]: any;
 }
 表示obj可以有任意数量的属性，并且只要他们不是color或者width,就无所谓他们的类型是什么
+```
+
+- 函数类型
+```JavaScript
+interface SearchFunc {
+  (source: string, subString: string): boolean;
+}
+定义一个调用签名，作为一个只有参数列表和返回值类型的函数定义，参数列表里面的每个参数都需要名字以及类型
+
+使用：
+let mySearch: SearchFunc;
+mySearch = function(source: string, subString: string) {
+  let result = source.search(subString);
+  return result > -1;
+}
+```
+
+- 索引类型
+```JavaScript
+interface StringArray {
+  [index: number]: string;
+}
+
+let myArray: StringArray;
+myArray = ["Bob", "Fred"];
+
+let myStr: string = myArray[0];
+
+定义StringArray接口，它具有索引签名。 这个索引签名表示了当用 number去索引StringArray时会得到string类型的返回值
+```
+**注意**ts支持两种索引签名：字符串和数字，我们可以同时使用两种类型的索引，但是数字索引的返回值必须是字符串索引返回值类型的子类型
+
+- 类类型
+```JavaScript
+interface ClockInterface {
+    currentTime: Date;
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date;
+    constructor(h: number, m: number) { }
+}
+
+可以在接口中描述一个方法，在类里面实现它
+interface ClockInterface {
+    currentTime: Date;
+    setTime(d: Date);
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date;
+    setTime(d: Date) {
+        this.currentTime = d;
+    }
+    constructor(h: number, m: number) { }
+}
+```
+
+- 接口继承
+```JavaScript
+interface Shape {
+    color: string;
+}
+
+interface Square extends Shape {
+    sideLength: number;
+}
+
+let square = <Square>{};
+square.color = "blue";
+square.sideLength = 10;
+
+继承多个接口
+interface Square extends Shape, PenStroke {
+    sideLength: number;
+}
+```
+- 混合类型
+```JavaScript
+interface Counter {
+    (start: number): string;
+    interval: number;
+    reset(): void;
+}
+
+function getCounter(): Counter {
+    let counter = <Counter>function (start: number) { };
+    counter.interval = 123;
+    counter.reset = function () { };
+    return counter;
+}
+
+let c = getCounter();
+c(10);
+c.reset();
+c.interval = 5.0;
 ```
