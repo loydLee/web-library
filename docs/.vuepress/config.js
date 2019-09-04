@@ -15,7 +15,7 @@ module.exports = {
     lastUpdated: '最近更新', // string | boolean
     nav:[ // 导航栏配置
       {text: '前端er', link: '/weber/electron/note.html' },
-      {text: '其他', link: '/other'},
+      {text: '其他', link: '/other/note.html'},
     ],
     sidebar: [{
       title: '前端er',
@@ -23,7 +23,6 @@ module.exports = {
       children: [
         {
           title: 'electron',
-          collapsable: false,
           children: [
             '/weber/electron/note.html',
             '/weber/electron/api.html',
@@ -32,7 +31,6 @@ module.exports = {
         },
         {
           title: 'js',
-          collapsable: false,
           children: [
             '/weber/js/note.html',
             '/weber/js/standard.html'
@@ -40,7 +38,6 @@ module.exports = {
         },
         {
           title: 'react',
-          collapsable: false,
           children: [
             '/weber/react/note.html',
             '/weber/react/react-native.html'
@@ -48,32 +45,34 @@ module.exports = {
         },
         {
           title: 'vue',
-          collapsable: false,
           children: [
             '/weber/vue/note.html'
           ]
         },
         {
           title: '正则',
-          collapsable: false,
           children: [
             '/weber/regular/common.html'
           ]
         },
         {
           title: 'typescript',
-          collapsable: false,
           children: [
             '/weber/typescript/note.html'
           ]
         },
         {
           title: '其他',
-          collapsable: false,
           children: [
             '/weber/other/note.html'
           ]
         }
+      ]
+    },{
+      title: '其他',
+      collapsable: false,
+      children: [
+        '/other/note.html'
       ]
     }], // 侧边栏配置
     sidebarDepth: 2, // 侧边栏显示2级
