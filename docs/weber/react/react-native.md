@@ -1,6 +1,4 @@
 
-[TOC]
-
 # react native
 
 ## 环境搭建

@@ -1,5 +1,4 @@
-typescript学习笔记
-[TOC]
+# typescript学习笔记
 
 ## 入门
 1、全局安装
@@ -157,8 +156,8 @@ interface obj {
     readonly x: number;
     readonly y: string；
 }
-```
 **注意：**ts具有ReadonlyArray<T>类型，与Array<T>相似，只是把所有的可变方法去掉，以确保数组创建后不能被修改
+```
 ```JavaScript
 let a: number[] = [1, 2, 3, 4];
 let ro: ReadonlyArray<number> = a;

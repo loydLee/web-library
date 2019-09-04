@@ -1,18 +1,19 @@
 # react学习笔记
 
-[TOC]
-
 ## JSX语法
+
 html语言直接写在javascript语言之中，不加任何引号，这就是jsx的语法，它允许html与javascript的混写
 
 jsx的基本语法规则：遇到html标签（以<开头），就用html规则解析，遇到代码块（以{开头），就用javascript规则解析
 
-## 组件开发需要注意：
-- 获取属性的值用的是this.props属性名，它与组件的属性一一对应，但是有一个例外，就是this.props.children，它表示组件的所有子节点
-- 创建的组件名称首字母必须大写
-- 为元素添加css的class时，要用className，fot属性需要写成htmlFor，因为class和for是javascript的保留字
-- 组件类只能包含一个顶层标签
-- 组件的style属性的设置方式也值得注意，要写成style={{width:this.state.width}}
+## 组件开发需要注意
+```
+获取属性的值用的是this.props属性名，它与组件的属性一一对应，但是有一个例外，就是this.props.children，它表示组件的所有子节点
+创建的组件名称首字母必须大写
+为元素添加css的class时，要用className，fot属性需要写成htmlFor，因为class和for是javascript的保留字
+组件类只能包含一个顶层标签
+组件的style属性的设置方式也值得注意，要写成style={{width:this.state.width}}
+```
 
 ## 状态(state)
 - getInitialState函数必须有返回值
@@ -117,9 +118,10 @@ const history = createMemoryHistory(location)
 ```
 
 ### 默认路由(IndexRoute)与IndexLink
-
-- IndexRoute-参数为component：默认渲染的组件
-- Index Links-如果在这个 app 中使用 <Link to="/">Home</Link> , 它会一直处于激活状态，因为所有的 URL 的开头都是 / 。 这确实是个问题，因为我们仅仅希望在 Home 被渲染后，激活并链接到它。如果需要在 Home 路由被渲染后才激活的指向 / 的链接，请使用 <IndexLink to="/">Home</IndexLink>
+```
+IndexRoute-参数为component：默认渲染的组件
+Index Links-如果在这个 app 中使用 <Link to="/">Home</Link> , 它会一直处于激活状态，因为所有的 URL 的开头都是 / 。 这确实是个问题，因为我们仅仅希望在 Home 被渲染后，激活并链接到它。如果需要在 Home 路由被渲染后才激活的指向 / 的链接，请使用 <IndexLink to="/">Home</IndexLink>
+```
 
 ### 动态路由
 React Router的路径匹配以及组件加载都是异步完成的，不仅仅允许延迟加载组件，并且可以延迟加载理由设置，在首次加载包中只需要有一个路径定义，路由会自动解析剩下的路径
@@ -266,14 +268,3 @@ const reducer = function (state, action) {
   return new_state;
 };
 ```
-
-
-
-
-
-
-
-
-
-
-
