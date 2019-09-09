@@ -276,3 +276,156 @@ c(10);
 c.reset();
 c.interval = 5.0;
 ```
+
+## 类
+- public
+typescript中成员默认为public
+
+- private
+成员不能在声明它的类的外部访问
+```js
+class Animal {
+    private name: string;
+    constructor(theName: string) { this.name = theName; }
+}
+
+new Animal("Cat").name; // 错误: 'name' 是私有的.
+```
+
+- protected
+protected修饰符与private的行为很相似，但是，protected的成员在派生类中仍然可以访问
+```js
+class Person {
+    protected name: string;
+    constructor(name: string) { this.name = name; }
+}
+
+class Employee extends Person {
+    private department: string;
+
+    constructor(name: string, department: string) {
+        super(name)
+        this.department = department;
+    }
+
+    public getElevatorPitch() {
+        return `Hello, my name is ${this.name} and I work in ${this.department}.`;
+    }
+}
+
+let howard = new Employee("Howard", "Sales");
+console.log(howard.getElevatorPitch());
+console.log(howard.name); // 错误
+```
+
+- readonly
+属性只读，只读属性必须在声明时或构造函数里被初始化。
+```js
+class Octopus {
+    readonly name: string;
+    readonly numberOfLegs: number = 8;
+    constructor (theName: string) {
+        this.name = theName;
+    }
+}
+let dad = new Octopus("Man with the 8 strong legs");
+dad.name = "Man with the 3-piece suit"; // 错误! name 是只读的.
+```
+
+- 参数属性
+```js
+class Animal {
+    constructor(private name: string) { }
+    move(distanceInMeters: number) {
+        console.log(`${this.name} moved ${distanceInMeters}m.`);
+    }
+}
+```
+
+- 存取器
+```js
+let passcode = "secret passcode"; // passcode不对的时候提示无权限进行修改
+
+class Employee {
+    private _fullName: string;
+
+    get fullName(): string {
+        return this._fullName;
+    }
+
+    set fullName(newName: string) {
+        if (passcode && passcode == "secret passcode") {
+            this._fullName = newName;
+        }
+        else {
+            console.log("Error: Unauthorized update of employee!");
+        }
+    }
+}
+
+let employee = new Employee();
+employee.fullName = "Bob Smith";
+if (employee.fullName) {
+    alert(employee.fullName);
+}
+```
+
+- 静态属性
+除开类的实例成员，类的静态成员存在于类本身而不是类的实例上，当我们需要访问它的时候，需要跟上类名
+```js
+class Grid {
+    static origin = {x: 0, y: 0};
+    calculateDistanceFromOrigin(point: {x: number; y: number;}) {
+        let xDist = (point.x - Grid.origin.x);
+        let yDist = (point.y - Grid.origin.y);
+        return Math.sqrt(xDist * xDist + yDist * yDist) / this.scale;
+    }
+    constructor (public scale: number) { }
+}
+
+let grid1 = new Grid(1.0);  // 1x scale
+let grid2 = new Grid(5.0);  // 5x scale
+
+console.log(grid1.calculateDistanceFromOrigin({x: 10, y: 10}));
+console.log(grid2.calculateDistanceFromOrigin({x: 10, y: 10}));
+```
+
+- 抽象类
+抽象类做为其它派生类的基类使用。 它们一般不会直接被实例化。 不同于接口，抽象类可以包含成员的实现细节。 abstract关键字是用于定义抽象类和在抽象类内部定义抽象方法。
+```js
+abstract class Animal {
+    abstract makeSound(): void;
+    move(): void {
+        console.log('roaming the earch...');
+    }
+}
+```
+注意：抽象类中的抽象方法不包含具体实现并且必须在派生类中实现，抽象方法的语法与接口方法相似，两者都是定义方法签名但不包含方法体，但是抽象方法必须包含abstract关键字并且可以包含访问修饰符
+
+## 函数
+
+- 为函数定义类型
+```js
+function add(x: number, y: number): number {
+    return x + y;
+}
+
+let myAdd = function(x: number, y: number): number { return x + y; };
+```
+
+- 推断类型
+```js
+// myAdd has the full function type
+let myAdd = function(x: number, y: number): number { return x + y; };
+
+// The parameters `x` and `y` have the type number
+let myAdd: (baseValue: number, increment: number) => number =
+    function(x, y) { return x + y; };
+// ts中传递给一个函数的参数个数必须与函数期望的参数个数一致
+```
+
+- 可选参数
+在参数旁使用?实现可选参数的功能，**可选参数必须跟在必选参数后面**
+```js
+function buildName(firstName: string, lastName?: string) {}
+```
