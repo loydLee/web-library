@@ -135,6 +135,7 @@ let someValue: any = "this is a string";
 
 let strLength: number = (someValue as string).length;
 ```
+*注意*：react jsx语法中只能使用第二种
 
 ## 接口
 ```JavaScript
@@ -429,3 +430,15 @@ let myAdd: (baseValue: number, increment: number) => number =
 ```js
 function buildName(firstName: string, lastName?: string) {}
 ```
+
+## 声明文件
+
+有些时候我们想要引用第三方库，eg:jQuery，在js中我们只需要简单的引入jQuery,然后就可以开启愉快的ctrl c + ctrl v了，但是，在ts中，编译器并不知道我们熟悉的$是什么玩意儿，这时候我们就需要媒婆(声明文件)出场了
+```javaScript
+declare var jQuery: (selector: string) => any;
+
+jQuery('#foo');
+```
+然鹅，declare我们并没有真的去定义一个变量，我们只是全局定义了jQuery的变量类型，它仅用于编译时的变量检查而已
+
+一般情况下，我们把声明语句放到一个单独的以.d.ts为后缀的文件中，ts会解析项目中所有的.ts文件，因此也包括所有的.d.ts文件，因此，一处定义，其他.ts文件也可以获取到相关定义。
