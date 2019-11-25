@@ -62,6 +62,12 @@ module.exports = {
           ]
         },
         {
+          title: 'git',
+          children: [
+            '/weber/git/note.html'
+          ]
+        },
+        {
           title: '其他',
           children: [
             '/weber/other/note.html'
