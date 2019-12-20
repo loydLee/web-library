@@ -5,7 +5,7 @@
 electron存在和浏览器一样拖入文件直接打开的问题
 
 electron3.0之下版本需要手动禁用浏览器相关默认行为
-```javascript
+```js
 document.addEventListener("dragenter", function( event ) {
     ...
 }, false);
@@ -23,7 +23,7 @@ document.addEventListener("dragend", function( event ) {
 ```
 
 或者通过定义mixins解决： 
-```JavaScript
+```js
 export default {
   mounted () {
     this.disableDragEvent()
@@ -70,14 +70,14 @@ export default {
 
 我们可以将特定的模块列入白名单，而不是将它视为webpack的externals,大多数情况下，我们不需要使用这个功能，但是某些情况下，比如提供了原始.vue组件的vue ui库，我们需要将他们列入白名单，以至于vue-loader能够进行编译，另一个情况是使用webpack的alias。
 
-```JavaScript
+```js
 let whiteListedModules = ['vue', 'element-ui', 'vue-router', 'axios', 'vuex', 'vue-electron']
 白名单内的内容才会被打包进程序，否则可能出现找不到依赖的情况
 ```
 
 ## dialog(打开文件或者保存文件)打开后禁用其他位置点击事件(类模态窗效果)
 
-```JavaScript
+```js
 dialog- showOpenDialog/showSaveDialog 第一个参数为browserWindow,该参数指定选定窗口，无法使用主进程export方式获取，也无法通过赋值方法保存
 
 获取 > BrowserWindow.getFocusedWindow()

@@ -17,7 +17,7 @@ quit 应用退出的时候触发
 - BrowserWindow
 
 **常用配置**
-```JavaScript
+```js
 let window
 
 function createWindow () {
@@ -94,7 +94,7 @@ titleBarStyle: 'hidden'
 通常我们用Chrome的时候，有个特性是比如你往Chrome里拖入一个pdf，它就会自动用内置的pdf阅读器打开。你往Chrome里拖入一张图片，它就会打开这张图片。由于我们的electron应用的BrowserWindow其实内部也是一个浏览器，所以这样的特性依然存在。而这也是很多人没有注意的地方。也就是当你开发完一个electron应用之后，往里拖入一张图片，一个pdf等等，如果不是一个可拖拽区域（比如PicGo的上传区），那么它就不应该打开这张图、这个pdf，而是将其排除在外。
 
 所以我们将在全局监听drag和drop事件，当用户拖入一个文件但是又不是拖入可拖拽区域的时候，应该将其屏蔽掉。因为所有的页面都应该要有这样的特性，因此合理使用vue的mixin很重要
-```JavaScript
+```js
 export default {
   mounted () {
     this.disableDragEvent()
@@ -126,7 +126,7 @@ export default {
 electron里的不同进程间的通信是通过ipcMain和ipcRenderer来实现的。其中ipcMain是在main进程里使用的，而ipcRenderer是在renderer进程里使用的。
 > 官网的例子
 
-```JavaScript
+```js
 // In main process.
 const {ipcMain} = require('electron')
 ipcMain.on('asynchronous-message', (event, arg) => {
@@ -140,7 +140,7 @@ ipcMain.on('synchronous-message', (event, arg) => {
 })
 ```
 
-```JavaScript
+```js
 // In renderer process (web page).
 const {ipcRenderer} = require('electron')
 console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // prints "pong"
@@ -160,7 +160,7 @@ ipcMain无法主动发消息给ipcRenderer，使用webContents
 webContents其实是BrowserWindow实例的一个属性。也就是如果我们需要在main进程里给某个窗口某个页面发送消息，则必须通过win.webContents.send()方法来发送。
 
 代码如下：
-```JavaScript
+```js
 // In main process
 let win = new BrowserWindow({...})
 win.webContents.send('img-files', imgs)
@@ -182,7 +182,7 @@ ipcRenderer.on('img-files', (event, files) => {
 ***tips***：为了操作fs更方便，不妨安装一个[fs-extra](https://github.com/jprichardson/node-fs-extra)。
 
 创建一个datastore.js文件：
-```JavaScript
+```js
 /**
  * lowdb 设置
 */
@@ -233,14 +233,14 @@ export default db
 - 基本操作
 
 创建：主要通过set()或者defaults()方法。其中defaults()专门针对空JSON文件进行初始化。（不过用set也是可以实现类似的，如上一小节说到的初始化）
-```JavaScript
+```js
 db.defaults({ posts: [], user: {}, count: 0 })
   .write() // 一定要显式调用write方法将数据存入JSON
 ```
 **注意任何写的操作，都必须显式的使用write()方法来保存。**
 
 **获取数据库**
-```javascript
+```js
 // 获取数据库
 getDB () {
     db[this.dbName].read()
@@ -249,14 +249,14 @@ getDB () {
 ```
 
 **读取**：
-```JavaScript
+```js
 getList () {
     return this.getDB().value()
 }
 ```
 > 还可以用lodash的一些方法来查询你的JSON。
 
-```JavaScript
+```js
 // 根据字段查找
 db.get('posts')
   .find({ id: 1 })
@@ -273,7 +273,7 @@ getInfoById (id) {
 **注意任何读的操作，都必须显式使用value()方法来获取值。**
 
 **新增**：
-```JavaScript
+```js
 // 针对对象就用赋值，针对数组就用push()或者insert()（lowdb-id提供的方法）
 // 添加信息
 addInfo (info) {
@@ -300,7 +300,7 @@ db.update('count', n => n + 1) // update方法使用已存在的值来操作
   .write()
 ```
 // 针对对象可以使用assign写入
-```javascript
+```js
 // 更新信息
 updateInfo (info) {
     this.getDB()
@@ -312,7 +312,7 @@ updateInfo (info) {
 ```
 
 删除:
-```JavaScript
+```js
 // 根据字段进行查找删除
 db.get('posts')
   .remove({ title: 'low!' })
@@ -349,7 +349,7 @@ deleteInfoById (id) {
 
 - 写入：
 
-```JavaScript
+```js
 const buffer = xlsx.build(this.list)
 const _path = path.join(__dirname, '.', 'result.xlsx')
 fs.writeFile(_path, buffer, function (err) {
@@ -362,7 +362,7 @@ console.log('Write to xls has finished')
 
 - 读取：
 
-```JavaScript
+```js
 const _path = path.join(__dirname, '.', 'result.xlsx')
 // 读xlsx
 var obj = xlsx.parse(_path)
@@ -376,7 +376,7 @@ electron同时在主进程和渲染进程中对node.js暴露了所有的接口�
 
 - 所有在node中可以使用的api，在electron中依旧可以使用，例如:
 
-```JavaScript
+```js
 const fs = require('fs')
 
 const root = fs.readdirSync('/')
@@ -387,7 +387,7 @@ console.log(root)
 ```
 
 读取：
-```JavaScript
+```js
 const APP = process.type === 'renderer' ? remote.app : app
 const STORE_PATH = APP.getPath('userData') + '/hdCloud/scheme' // 定义根路径
 
@@ -414,7 +414,7 @@ schemeModule.readFile = function (fileName) {
 }
 ```
 写入：
-```JavaScript
+```js
 schemeModule.writeFile = function (file, fileName) {
   const _path = path.join(STORE_PATH, '.', `${fileName}.json`)
   fs.writeFile(_path, JSON.stringify(file), function (err) {
@@ -424,7 +424,7 @@ schemeModule.writeFile = function (file, fileName) {
 ```
 
 ## 利用electron-builder打包
-```JavaScript
+```js
 "build": {
     "productName": "HDcalculator", // 打包出来的软件名
     "appId": "huidian.calculator.com", // appid
@@ -482,6 +482,6 @@ schemeModule.writeFile = function (file, fileName) {
   }
 ```
 script设置：
-```JavaScript
+```js
 "build:package": "node .electron-vue/build-builder.js && electron-builder --win", // 指定打包windows环境 前面那一段很重要  不加的话会出现打包app打开白屏的情况
 ```

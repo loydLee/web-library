@@ -4,7 +4,7 @@
 > [API手册项目](https://github.com/demopark/electron-api-demos-Zh_CN)
 ## 主进程
 1、应用程序进程
-```javascript
+```js
 const { BrowserWindow } = require('electron')
 const win = new BrowserWindow()
 
@@ -12,7 +12,7 @@ win.setProgressBar(0.5)
 ```
 
 2、任务栏弹出列表
-```javascript
+```js
 const { app } = require('electron')
 app.setUserTasks([
   {
@@ -27,7 +27,7 @@ app.setUserTasks([
 ```
 
 3、任务栏缩略图工具栏
-```javascript
+```js
 const { BrowserWindow } = require('electron')
 const path = require('path')
 
@@ -56,7 +56,7 @@ win.setThumbarButtons([])
 
 4、本地快捷键
 我们可以使用menu模块来配置快捷键，但是只有当app在处于焦点时才能够进行触发，在创建 MenuItem时必须指定一个 `accelerator` 属性。
-```javascript
+```js
 const { Menu, MenuItem } = require('electron')
 const menu = new Menu()
 
@@ -75,7 +75,7 @@ menu.append(new MenuItem({
 
 5、全局快捷键
 当应用程序不处于焦点状态时，你可以使用 globalShortcut 模块来检测键盘事件
-```javascript
+```js
 const { app, globalShortcut } = require('electron')
 
 app.on('ready', () => {
@@ -87,7 +87,7 @@ app.on('ready', () => {
 
 ## 渲染进程
 1、通知（Notification）
-```javascript
+```js
 let myNotification = new Notification('标题', {
   body: '通知正文内容'
 }) // 声明并显示一个通知

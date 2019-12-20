@@ -1,0 +1,132 @@
+{
+  // VScode主题配置
+  "window.zoomLevel": 0,
+  "editor.tabSize": 2,
+  "editor.lineHeight": 0,
+  "editor.renderLineHighlight": "none",
+  "editor.renderWhitespace": "none",
+  "editor.fontFamily": "Consolas",
+  "editor.fontSize": 15,
+  "editor.cursorBlinking": "smooth",
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.snippetSuggestions": "top",
+  // 使用vscode的自动格式化时，有时会把一行过长的代码折行。400表示400个字符处折行
+  "editor.wordWrapColumn": 400,
+  "editor.wordWrap": "off",
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.organizeImport": true
+  },
+  // 保存文件时，自动格式化
+  "editor.formatOnSave": true,
+  // 格式化粘贴到文件内的内容
+  "editor.formatOnPaste": true,
+  "terminal.integrated.shell.windows": "C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+  "javascript.suggestionActions.enabled": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.implicitProjectConfig.experimentalDecorators": true,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.startupEditor": "newUntitledFile",
+  // css2rem插件配置:设置书写css时，px自动提示转换为rem的根字体大小，默认值为16
+  "cssrem.rootFontSize": 100,
+  // 启用/禁用导航路径
+  "breadcrumbs.enabled": true,
+  // 通过默认浏览器打开html文件
+  "open-in-browser.default": "chrome",
+  // VScode进行文件搜索时，不搜索这些区域。注意：vs已经贴心的默认设置了 node_modules 和 bower_components 文件夹
+  "search.exclude": {
+    "**/.git": true,
+    "**/.gitignore": true,
+    "**/.svn": true,
+    "**/.DS_Store": true,
+    "**/.idea": true,
+    "**/.vscode": false,
+    "**/yarn.lock": true,
+    "**/tmp": true,
+    "**/dist": true,
+    "**/build": true
+  },
+  // 配置文件关联
+  // 比如小程序中的 .wxss 这种文件，会把它作为css文件来处理，提供对应的css的语法提示，css的格式化等等。
+  "files.associations": {
+    "*.wxss": "css",
+    "*.cjson": "jsonc",
+    "*.wxs": "javascript",
+    "*.ts": "typescript",
+    "*.vue": "vue",
+    "*.dart": "dart"
+  },
+  // vscode已经内置了emmet。配置emmet是否启用tab展开缩写
+  // 这一设置最大作用是：当输入的文本不属于Emmet定义的缩写规则时，依然允许使用Tab键进行缩进。此时会提示我自定义的缩写语句，以及各插件自定义的缩写语句.
+  "emmet.triggerExpansionOnTab": true,
+  "emmet.showSuggestionsAsSnippets": true,
+  // 配置emmet对哪种文件类型支持
+  "emmet.syntaxProfiles": {
+    "vue-html": "html",
+    "vue": "html",
+    "javascript": "javascriptreact",
+    "xml": {
+      "attr_quotes": "single"
+    }
+  },
+  // 在 react 的jsx中添加对emmet的支持
+  "emmet.includeLanguages": {
+    "jsx-sublime-babel-tags": "javascriptreact",
+    "wxml": "html",
+    "javascript": "javascriptreact"
+  },
+  // 是否开启eslint检测
+  "eslint.enable": true,
+  // 是否启用根据eslint配置文件。文件保存时，根据配置文件进行格式化
+  "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    {
+      "language": "html",
+      "autoFix": true
+    },
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    "typescript",
+    "typescriptreact"
+  ],
+  // 安装了tslint插件后，是否启用该插件
+  "typescript.validate.enable": false,
+  // git是否启用自动拉取
+  "git.autofetch": true,
+  // 配置gitlen中git提交历史记录的信息显示情况
+  "gitlens.advanced.messages": {
+    "suppressCommitHasNoPreviousCommitWarning": false,
+    "suppressCommitNotFoundWarning": false,
+    "suppressFileNotUnderSourceControlWarning": false,
+    "suppressGitVersionWarning": false,
+    "suppressLineUncommittedWarning": false,
+    "suppressNoRepositoryWarning": false,
+    "suppressResultsExplorerNotice": false,
+    "suppressShowKeyBindingsNotice": true,
+    "suppressUpdateNotice": true,
+    "suppressWelcomeNotice": false
+  },
+  // 断点调试时，遇到断点，自动显示调试视图。
+  "debug.openDebug": "openOnDebugBreak",
+  "vetur.validation.template": false,
+  "vetur.format.defaultFormatter.html": "prettyhtml",
+  "vetur.format.defaultFormatter.js": "vscode-typescript",
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "vetur.format.defaultFormatterOptions": {
+    "prettier": {
+      "singleQuote": true,
+      "semi": false
+    }
+  },
+  "terminal.integrated.rendererType": "dom",
+  "files.autoSave": "off",
+  "workbench.colorTheme": "Atom One Dark"
+}

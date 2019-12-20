@@ -2,17 +2,17 @@
 
 ## 入门
 1、全局安装
-```JavaScript
+```js
 npm install -g typescript
 ```
 2、编译代码
-```JavaScript
+```js
 tsc greeter.ts
 ```
 
 ## 基础类型
 1、元素类型
-```JavaScript
+```js
 // 布尔值
 let isDone: boolean = false
 
@@ -29,7 +29,7 @@ name = 'loyd'
 注: 支持模板字符串``
 ```
 2、其他
-```JavaScript
+```js
 // 数组
 方式一：在元素类型后面接上[]
 let list: number [] = [1,2,3]
@@ -138,28 +138,28 @@ let strLength: number = (someValue as string).length;
 *注意*：react jsx语法中只能使用第二种
 
 ## 接口
-```JavaScript
+```js
 interface obj {
     label: string;
 }
 // 声明了一个名叫obj的接口，它有一个label属性并且类型为string的对象
 ```
 - 可选属性
-```JavaScript
+```js
 interface obj {
     color? : string;
     width? : number;
 }
 ```
 - 只读属性
-```JavaScript
+```js
 interface obj {
     readonly x: number;
     readonly y: string；
 }
 **注意：**ts具有ReadonlyArray<T>类型，与Array<T>相似，只是把所有的可变方法去掉，以确保数组创建后不能被修改
 ```
-```JavaScript
+```js
 let a: number[] = [1, 2, 3, 4];
 let ro: ReadonlyArray<number> = a;
 ro[0] = 12; // error!
@@ -173,7 +173,7 @@ a = ro as number[];
 变量：const 属性：readonly
 
 - 字符串索引签名
-```JavaScript
+```js
 interface obj {
     color?: string;
     width?: number;
@@ -183,7 +183,7 @@ interface obj {
 ```
 
 - 函数类型
-```JavaScript
+```js
 interface SearchFunc {
   (source: string, subString: string): boolean;
 }
@@ -198,7 +198,7 @@ mySearch = function(source: string, subString: string) {
 ```
 
 - 索引类型
-```JavaScript
+```js
 interface StringArray {
   [index: number]: string;
 }
@@ -213,7 +213,7 @@ let myStr: string = myArray[0];
 **注意**ts支持两种索引签名：字符串和数字，我们可以同时使用两种类型的索引，但是数字索引的返回值必须是字符串索引返回值类型的子类型
 
 - 类类型
-```JavaScript
+```js
 interface ClockInterface {
     currentTime: Date;
 }
@@ -239,7 +239,7 @@ class Clock implements ClockInterface {
 ```
 
 - 接口继承
-```JavaScript
+```js
 interface Shape {
     color: string;
 }
@@ -258,7 +258,7 @@ interface Square extends Shape, PenStroke {
 }
 ```
 - 混合类型
-```JavaScript
+```js
 interface Counter {
     (start: number): string;
     interval: number;
@@ -434,7 +434,7 @@ function buildName(firstName: string, lastName?: string) {}
 ## 声明文件
 
 有些时候我们想要引用第三方库，eg:jQuery，在js中我们只需要简单的引入jQuery,然后就可以开启愉快的ctrl c + ctrl v了，但是，在ts中，编译器并不知道我们熟悉的$是什么玩意儿，这时候我们就需要媒婆(声明文件)出场了
-```javaScript
+```js
 declare var jQuery: (selector: string) => any;
 
 jQuery('#foo');
