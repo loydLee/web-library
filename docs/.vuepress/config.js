@@ -58,6 +58,10 @@ module.exports = {
             children: ["/weber/git/note.html"]
           },
           {
+            title: "algorithm",
+            children: ["/weber/algorithm/note.html"]
+          },
+          {
             title: "其他",
             children: ["/weber/other/note.html", "/weber/other/MicroFront.html"]
           }
