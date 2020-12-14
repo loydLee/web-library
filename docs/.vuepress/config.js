@@ -32,7 +32,7 @@ module.exports = {
           },
           {
             title: "js",
-            children: ["/weber/js/note.html", "/weber/js/standard.html"]
+            children: ["/weber/js/note.html"]
           },
           {
             title: "react",
