@@ -4,7 +4,7 @@
 
 ### 末尾验证
 
-```
+```js
     判断是否以指定字符串开始用startsWith，结尾用endsWith
     eg:let str = 'aaa'      console.log(str.endWith(a))-------true
 ```
@@ -26,7 +26,7 @@ headers: {
 
 ```js
 // 移动端跳转
-var OS = (function () {
+var OS = (function() {
   var a = navigator.userAgent,
     b = /(?:Android)/.test(a),
     d = /(?:Firefox)/.test(a),
@@ -69,8 +69,8 @@ function wxSetTitle(title) {
     var iframe = document.createElement("iframe");
     iframe.style.visibility = "hidden";
     iframe.setAttribute("src", "loading.png");
-    var iframeCallback = function () {
-      setTimeout(function () {
+    var iframeCallback = function() {
+      setTimeout(function() {
         iframe.removeEventListener("load", iframeCallback);
         document.body.removeChild(iframe);
       }, 0);
