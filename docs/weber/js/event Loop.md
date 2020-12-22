@@ -66,3 +66,16 @@ setTimeout 实现动画效果，在某些机器上出现卡顿，抖动现象，
 4、接着才执行 Web Worker 里面内容
 5、再来是 index.html 中的宏任务
 6、最后才是 Web Worker 文件中的宏任务
+
+使用：
+
+- worker.addEventListener('message', callback)。接收 Web Worker 传递的数据。
+- worker.postMessage('xxx')。发送数据给 Web Worker。
+- worker.terminate()。终止通讯
+
+### Web Worker 可操作 API
+
+- setTimeout()， clearTimeout()， setInterval()， clearInterval()：有了这几个函数，就可以在 Web Worker 线程中执行定时操作了；
+- XMLHttpRequest 对象：意味着我们可以在 Web Worker 线程中执行 Ajax 请求；
+- navigator 对象：可以获取到 ppName，appVersion，platform，userAgent 等信息；
+- location 对象（只读）：可以获取到有关当前 URL 的信息；
