@@ -32,3 +32,14 @@ git rm -r --cached .
 git config core.autocrlf false
 git add .
 ```
+
+## 回滚代码
+
+```
+处理回滚的开发
+git reset --hard commit {commitId}
+git push --force origin {branchName}
+其他小伙伴本地
+git reset --hard origin {branchName}
+git pull origin {branchName}
+```
