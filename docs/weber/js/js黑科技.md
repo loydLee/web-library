@@ -210,11 +210,3 @@ axios.get(source, { responseType: "blob" }).then((res) => {
   };
 });
 ```
-
-## input placeholder 文字居中
-
-```css
-&::-webkit-input-placeholder {
-  text-align: center;
-}
-```
