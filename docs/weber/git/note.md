@@ -69,4 +69,6 @@ git submodule add 添加子模块
 git submodule init 初始化子模块
 git submodule update 更新子模块
 git submodule foreach git pull 拉取所有子模块
+git checkout --recurse-submodules
+git config submodule.recurse true
 ```
