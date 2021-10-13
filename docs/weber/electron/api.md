@@ -1,7 +1,6 @@
 # Electron 常用 api
 
 > [官方文档](https://electronjs.org/docs)
-
 > [API 手册项目](https://github.com/demopark/electron-api-demos-Zh_CN)
 
 ## 主进程
