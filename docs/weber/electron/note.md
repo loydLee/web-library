@@ -195,7 +195,7 @@ ipcRenderer.on('img-files', (event, files) => {
 
 - 初始化
 
-**注意**：lowdb 每次调用数据的时候需要显示调用其 read 方法，保证各个进程获取到的数据一致性
+**注意**：lowdb 每次调用数据的时候需要显式调用其 read 方法，保证各个进程获取到的数据一致性
 
 **_tips_**：为了操作 fs 更方便，不妨安装一个[fs-extra](https://github.com/jprichardson/node-fs-extra)。
 
