@@ -23,6 +23,14 @@ module.exports = {
         collapsable: false,
         children: [
           {
+            title: "algorithm",
+            children: ["/weber/algorithm/note.html"]
+          },
+          {
+            title: 'css',
+            children: ["/weber/css/那些不知道的css.html"]
+          },
+          {
             title: "electron",
             children: [
               "/weber/electron/note.html",
@@ -31,8 +39,24 @@ module.exports = {
             ]
           },
           {
+            title: "git",
+            children: ["/weber/git/note.html"]
+          },
+          {
             title: "js",
-            children: ["/weber/js/note.html"]
+            children: [
+              "/weber/js/闭包柯里化.html",
+              "/weber/js/变量.html",
+              "/weber/js/词法作用域和动态作用域.html",
+              "/weber/js/原型与原型链.html",
+              "/weber/js/这一次彻底弄懂JSONstringify.html",
+              "/weber/js/eventLoop.html",
+              "/weber/js/js黑科技.html",
+              "/weber/js/js基础.html",
+              "/weber/js/js执行上下文栈.html",
+              "/weber/js/promise.html",
+              "/weber/js/this.html",
+            ]
           },
           {
             title: "react",
@@ -43,7 +67,9 @@ module.exports = {
           },
           {
             title: "vue",
-            children: ["/weber/vue/note.html"]
+            children: [
+              "/weber/vue/note.html",
+              "/weber/vue/vue3.html"]
           },
           {
             title: "正则",
@@ -51,19 +77,18 @@ module.exports = {
           },
           {
             title: "typescript",
-            children: ["/weber/typescript/note.html"]
-          },
-          {
-            title: "git",
-            children: ["/weber/git/note.html"]
-          },
-          {
-            title: "algorithm",
-            children: ["/weber/algorithm/note.html"]
+            children: [
+              "/weber/typescript/note.html",
+              "/weber/typescript/react+ts.html"
+            ]
           },
           {
             title: "其他",
-            children: ["/weber/other/note.html", "/weber/other/MicroFront.html"]
+            children: [
+              "/weber/other/note.html",
+              "/weber/other/基于飞冰的微前端实践.html",
+              "/weber/other/基于qiankun的微前端实践.html"
+            ]
           }
         ]
       },
