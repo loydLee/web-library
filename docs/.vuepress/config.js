@@ -56,6 +56,7 @@ module.exports = {
               "/weber/js/js执行上下文栈.html",
               "/weber/js/promise.html",
               "/weber/js/this.html",
+              "/weber/js/手动实现系列.html",
             ]
           },
           {
