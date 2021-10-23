@@ -24,7 +24,10 @@ module.exports = {
         children: [
           {
             title: "algorithm",
-            children: ["/weber/algorithm/note.html"]
+            children: [
+              "/weber/algorithm/note.html",
+              "/weber/algorithm/时间空间复杂度计算.html"
+            ]
           },
           {
             title: 'css',
@@ -47,7 +50,13 @@ module.exports = {
             children: [
               "/weber/js/闭包柯里化.html",
               "/weber/js/变量.html",
+              "/weber/js/创建对象多种方式及其优缺点.html",
               "/weber/js/词法作用域和动态作用域.html",
+              "/weber/js/继承多种方式及优缺点.html",
+              "/weber/js/类数组对象与arguments.html",
+              "/weber/js/类型转换.html",
+              "/weber/js/深浅拷贝.html",
+              "/weber/js/手动实现系列.html",
               "/weber/js/原型与原型链.html",
               "/weber/js/这一次彻底弄懂JSONstringify.html",
               "/weber/js/eventLoop.html",
@@ -56,7 +65,7 @@ module.exports = {
               "/weber/js/js执行上下文栈.html",
               "/weber/js/promise.html",
               "/weber/js/this.html",
-              "/weber/js/手动实现系列.html",
+              "/weber/js/underscore之防抖节流.html",
             ]
           },
           {
