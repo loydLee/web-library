@@ -69,12 +69,19 @@ let c: Color = Color.Green;
 
 enum Color {Red = 1, Green = 2, Blue = 4} // 全部手动赋值
 let c: Color = Color.Green;
-
 使用枚举类型方便我们由枚举的值得到它的名字，比如我们知道一个值为2，但是我们不确定它映射的名字，可以进行查找
 enum Color {Red = 1, Green, Blue}
 let colorName: string = Color[2];
 
 console.log(colorName);  // 显示'Green'因为上面代码里它的值是2
+
+常数枚举
+const enum Enum {
+  A=1,
+  B=a*2
+}
+
+**注意**常数枚举只能使用常数枚举表达式并且不同于常规的枚举的是它们在编译阶段会被删除，常数枚举成员在使用的地方被内联进来，这是因为常数枚举不可能有计算成员
 
 // Any
 解释：js的时候，我们经常会遇到这种情况：声明变量的时候还不知道这个值的类型，大多数情况下我们会声明为空字符串/数组/对象，然后实际赋值的时候就会出现跨类型赋值，这种情况下，我们并不希望类型检查器对这些值进行检查，ts提出了any
@@ -206,7 +213,6 @@ interface SearchFunc {
   (source: string, subString: string): boolean;
 }
 定义一个调用签名，作为一个只有参数列表和返回值类型的函数定义，参数列表里面的每个参数都需要名字以及类型
-
 使用：
 let mySearch: SearchFunc;
 mySearch = function(source: string, subString: string) {
@@ -472,6 +478,93 @@ let myAdd: (baseValue: number, increment: number) => number = function(x, y) {
 function buildName(firstName: string, lastName?: string) {}
 ```
 
+- 重载
+  javascript 本身是动态语言，在 js 里面函数根据传入不同的参数返回不同类型的数据是非常常见的
+
+为同一函数提供多个函数类型定义来进行函数重载，编译器会根据这个列表去处理函数的调用,因为它查找重载列表的时候，尝试使用第一个重载定义，如果匹配就使用这个，因此，定义重载的时候，一定要把最精确的定义放在最前面
+
+## 泛型
+
+### 泛型类型
+
+```js
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+let myIdentity: <T>(arg: T) => T = identity;
+```
+
+我们也可以使用带有调用签名的对象字面量来定义泛型函数
+
+```js
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+let myIdentity: { <T>(arg: T): T } = identity;
+```
+
+进一步，我们可以写泛型接口
+
+```js
+interface GenericIdentityFn {
+  <T>(arg: T): T;
+}
+
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+let myIdentity: GenericIdentityFn = identity;
+```
+
+当我们想把泛型参数当作整个接口的一个参数
+
+```js
+interface GenericIdentityFn<T> {
+  (arg: T): T;
+}
+
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+let myIdentity: GenericIdentityFn<number> = identity;
+```
+
+此外，除了泛型接口，我们还可以创建泛型类，但是**无法创建泛型枚举和泛型命名空间**
+
+### 泛型类
+
+```js
+class GenericNumber<T> {
+    zeroValue: T;
+    add: (x: T, y: T) => T;
+}
+
+let myGenericNumber = new GenericNumber<number>();
+myGenericNumber.zeroValue = 0;
+myGenericNumber.add = function(x, y) { return x + y; };
+```
+
+注意：类有两部分，静态部分和实例部分，泛型类指的是实例部分的类型，所以类的静态属性不能使用这个泛型类型
+
+### 泛型约束
+
+```js
+interface Lengthwise {
+    length: number;
+}
+
+function loggingIdentity<T extends Lengthwise>(arg: T): T {
+    console.log(arg.length);  // Now we know it has a .length property, so no more error
+    return arg;
+}
+```
+
+被定义了约束之后，这个泛型函数不再适用于任何类型
+
 ## 声明文件
 
 有些时候我们想要引用第三方库，eg:jQuery，在 js 中我们只需要简单的引入 jQuery,然后就可以开启愉快的 ctrl c + ctrl v 了，但是，在 ts 中，编译器并不知道我们熟悉的\$是什么玩意儿，这时候我们就需要媒婆(声明文件)出场了
@@ -485,3 +578,112 @@ jQuery("#foo");
 然鹅，declare 我们并没有真的去定义一个变量，我们只是全局定义了 jQuery 的变量类型，它仅用于编译时的变量检查而已
 
 一般情况下，我们把声明语句放到一个单独的以.d.ts 为后缀的文件中，ts 会解析项目中所有的.ts 文件，因此也包括所有的.d.ts 文件，因此，一处定义，其他.ts 文件也可以获取到相关定义。
+
+## 高级类型
+
+### 交叉类型
+
+交叉类型是将多个类型合并为一个类型，他饱含了所需的所有类型的特性，大多数情况下，我们是在混入（mixin）或者其他不适合典型面对对象模型的地方看到交叉类型的使用
+
+### 联合类型
+
+联合类型和交叉类型很有关联，但是在使用上完全不同
+如果一个值是联合类型，我们只能访问联合类型的所有类型共有的成员
+
+```js
+interface Bird {
+    fly();
+    layEggs();
+}
+
+interface Fish {
+    swim();
+    layEggs();
+}
+
+function getSmallPet(): Fish | Bird {
+    // ...
+}
+
+let pet = getSmallPet();
+pet.layEggs(); // okay
+pet.swim();    // errors
+```
+
+## 类型保护与区分类型
+
+联合类型适合值为不同类型的情况，但是当我们想要确切的了解一个值的类型的时候，js 里面我们最长使用的方法是通过 if 检查成员是否存在
+ts 中可以使用类型断言
+
+```js
+let pet = getSmallPet();
+
+if ((<Fish>pet).swim) {
+    (<Fish>pet).swim();
+}
+else {
+    (<Bird>pet).fly();
+}
+```
+
+ts 中的类型保护机制就是一些表达式，他们会在运行时检查以确保在某个作用域里的类型，定义一个类型保护，可以通过定义一个返回值是一个类型谓词的函数来实现
+
+```js
+function isFish(pet: Fish | Bird): pet is Fish {
+    return (<Fish>pet).swim !== undefined;
+}
+
+// 'swim' 和 'fly' 调用都没有问题了
+
+if (isFish(pet)) {
+    pet.swim();
+}
+else {
+    pet.fly();
+}
+```
+
+typeof 类型保护只有两种形式能被识别：typeof v === "typename"和 typeof v !== "typename"，"typename"必须是"number"，"string"，"boolean"或"symbol"
+
+instanceof 类型保护判断某实例是某个构造函数的类型
+
+**注意**默认情况下，类型检查器认为 null 与 undefined 可以赋值给任何类型。 null 与 undefined 是所有其它类型的一个有效值
+
+！后缀： identifier！表示从 identifier 的类型去除了 null 和 undefined
+
+## 类型操作符
+
+### keyof T - 索引理性查询操作符
+
+对于任何类型 T，keyof T 的结果为 T 上已知的公共属性名的联合
+
+```js
+interface Person {
+  name: string;
+  age: number;
+}
+
+let personProps: keyof Person; // 'name' | 'age'
+```
+
+### T[K] - 索引访问操作符
+
+类型语法反映了表达式语法，eg：person['name']具有类型 Person['name'],在保证类型变量 K extends keyof T 的前提下，就可以在普通的上下文里使用 T[K]
+
+```js
+function getProperty<T, K extends keyof T>(o: T, name: K): T[K] {
+    return o[name]; // o[name] is of type T[K]
+}
+```
+
+## 索引类型和字符串索引签名
+
+keyof 和 T[K]与字符串索引签名进行交互。 如果你有一个带有字符串索引签名的类型，那么 keyof T 会是 string。 并且 T[string]为索引签名的类型：
+
+```js
+interface Map<T> {
+    [key: string]: T;
+}
+let keys: keyof Map<number>; // string
+let value: Map<number>['foo']; // number
+```
