@@ -610,7 +610,7 @@ pet.layEggs(); // okay
 pet.swim();    // errors
 ```
 
-## 类型保护与区分类型
+### 类型保护与区分类型
 
 联合类型适合值为不同类型的情况，但是当我们想要确切的了解一个值的类型的时候，js 里面我们最长使用的方法是通过 if 检查成员是否存在
 ts 中可以使用类型断言
@@ -651,7 +651,7 @@ instanceof 类型保护判断某实例是某个构造函数的类型
 
 ！后缀： identifier！表示从 identifier 的类型去除了 null 和 undefined
 
-## 类型操作符
+### 类型操作符
 
 ### keyof T - 索引理性查询操作符
 
@@ -676,7 +676,7 @@ function getProperty<T, K extends keyof T>(o: T, name: K): T[K] {
 }
 ```
 
-## 索引类型和字符串索引签名
+### 索引类型和字符串索引签名
 
 keyof 和 T[K]与字符串索引签名进行交互。 如果你有一个带有字符串索引签名的类型，那么 keyof T 会是 string。 并且 T[string]为索引签名的类型：
 
@@ -687,3 +687,45 @@ interface Map<T> {
 let keys: keyof Map<number>; // string
 let value: Map<number>['foo']; // number
 ```
+
+### 从旧类型中创建新类型的一种方式-映射类型
+
+新类型以相同的形式去转换旧类型里的每个属性，eg:令每个属性成为 readonly 类型或可选的
+
+```js
+type Readonly<T> = {
+    readonly [P in keyof T]: T[P];
+}
+type Partial<T> = {
+    [P in keyof T]?: T[P];
+}
+
+type PersonPartial = Partial<Person>;
+type ReadonlyPerson = Readonly<Person>;
+
+
+// 一个简单的映射类型
+type keys = ‘option1’ | 'option2'
+type Flags = {[K in keys]:boolean}
+
+// 等同于
+
+type Flags = {
+  option1: boolean,
+  option2: boolean
+}
+```
+
+## Symbols
+
+- Symbols.hasInstance 方法，会被 instanceof 运算符调用。构造器对象用来识别一个对象是否是其实例。
+- Symbols.isConcatSpreadable 布尔值，表示当在一个对象上调用 Array.prototype.concat 时，这个对象的数组元素是否可展开。
+- Symbol.iterator 方法，被 for-of 语句调用。返回对象的默认迭代器。
+- Symbol.match 方法，被 String.prototype 调用，正则表达式用来匹配字符串
+- Symbol.replace 方法，被 String.prototype 调用，正则表达式用来替换字符串中匹配的字符
+- Symbol.search 方法，被 String.prototype 调用,正则表达式返回被匹配部分在字符串中的索引
+- Symbol.species 函数值，为一个构造函数，用来创造派生对象
+- Symbol.split 方法，被 String.prototype.split 调用。正则表达式来用分割字符串。
+- Symbol.toPrimitive 方法，被 ToPrimitive 抽象操作调用。把对象转换为相应的原始值。
+- Symbol.toStringTag 方法，被内置方法 Object.prototype.toString 调用。返回创建对象时默认的字符串描述。
+- Symbol.unscopables 对象，它自己拥有的属性会被 with 作用域排除在外。

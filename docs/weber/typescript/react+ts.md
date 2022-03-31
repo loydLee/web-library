@@ -186,7 +186,7 @@
   const mapStateToProps = (state: IStoreState) => {
     const { homePage } = state;
     return {
-      homePage
+      homePage,
     };
   };
   ```
@@ -202,8 +202,8 @@
     const syncData = {
       type: CONST.SYNC_DATA,
       payload: {
-        data: "syncId=https://github.com/icepy"
-      }
+        data: "syncId=https://github.com/icepy",
+      },
     };
     return syncData;
   }
@@ -213,8 +213,8 @@
       const asyncData = {
         type: CONST.ASYNC_DATA,
         payload: {
-          data: "asyncId=https://icepy.me"
-        }
+          data: "asyncId=https://icepy.me",
+        },
       };
       setTimeout(() => {
         dispatch(asyncData);
@@ -229,7 +229,7 @@
 
   const initState: TYPES.IHomePageStoreState = {
     syncId: "默认值",
-    asyncId: "默认值"
+    asyncId: "默认值",
   };
 
   export function homeReducers(
@@ -350,3 +350,17 @@
 
   export const App = connect(mapStateToProps)(AppComponent);
   ```
+
+## Event 事件对象类型
+
+常见的 Event 事件对象类型：
+
+- ClipboardEvent<T = Element> 剪贴板事件对象
+- DragEvent<T = Element> 拖拽事件对象
+- ChangeEvent<T = Element> Change 事件对象
+- KeyboardEvent<T = Element> 键盘事件对象
+- MouseEvent<T = Element> 鼠标事件对象
+- TouchEvent<T = Element> 触摸事件对象
+- WheelEvent<T = Element> 滚轮事件对象
+- AnimationEvent<T = Element> 动画事件对象
+- TransitionEvent<T = Element> 过渡事件对象
