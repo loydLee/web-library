@@ -148,6 +148,50 @@
   }
   ```
 
+- 类组件
+  类组件的定义形式有两种：React.Component<P, S={}> 和 React.PureComponent<P, S={} SS={}>，它们都是泛型接口，接收两个参数，第一个是 props 类型的定义，第二个是 state 类型的定义，这两个参数都不是必须的，没有时可以省略
+
+```ts
+interface IProps {
+  name: string;
+}
+
+interface IState {
+  count: number;
+}
+
+class App extends React.Component<IProps, IState> {
+  state = {
+    count: 0,
+  };
+
+  render() {
+    return (
+      <div>
+        {this.state.count}
+        {this.props.name}
+      </div>
+    );
+  }
+}
+
+export default App;
+
+class App extends React.PureComponent<IProps, IState> {}
+
+// React.PureComponent是有第三个参数的，它表示getSnapshotBeforeUpdate的返回值。
+```
+
+PureComponent 与 Component 的区别
+
+主要区别是 PureComponent 中的 shouldComponentUpdate 是由自身进行处理的，不需要我们进习惯处理，因此它可以在一定程度上提升性能
+
+- React.FC
+  使用 React.FC 声明函数组件和普通声明的区别如下：
+  - React.FC 显式地定义了返回类型，其他方式是隐式推导的；
+  - React.FC 对静态属性：displayName、propTypes、defaultProps 提供了类型检查和自动补全；
+  - React.FC 为 children 提供了隐式的类型（ReactElement | null）。
+
 ## 状态管理
 
 - 页面级别的 reducers
@@ -364,3 +408,111 @@
 - WheelEvent<T = Element> 滚轮事件对象
 - AnimationEvent<T = Element> 动画事件对象
 - TransitionEvent<T = Element> 过渡事件对象
+
+## React Hooks
+
+- useState
+  如果初始值为 null，需要显式地声明 state 的类型
+  const [count, setCount] = useState<number | null>(null);
+
+  如果 state 是一个对象，想要初始化一个控对象，可以使用断言来处理
+  const [user, setUser] = React.useState<IUser>({} as IUser);
+
+- useEffect
+  useEffect 的主要作用就是处理副作用，它的第一个参数是一个函数，表示要清除副作用的操作，第二个参数是一组值，当这组值改变时，第一个参数的函数才会执行
+
+- useRef
+  使用 useRef，访问一个可变的引用对象，将初始值传递给 useRef，用于初始化可变对象公开的当前属性，使用 useRef 的时候，需要给其指定类型
+
+  ```ts
+  const nameInput = React.useRef<HTMLInputElement>(null);
+
+  //当useRef的初始值为null时
+
+  nameInput.current.innerText = "hello world";
+  // 这种情况ref.current是只读的，对其赋值会报错
+
+  // 如果需要useRef的值直接可变，就需要在泛型参数中包含“｜null”
+  const nameInput = React.useRef<HTMLInputElement | null>(null);
+  nameInput.current?.innerText = "hello world";
+  ```
+
+- useCallback
+  useCallback 接收一个回调函数和一个依赖数组，只有当依赖数组中的值发生变化时才会重新执行回调函数
+
+  ```ts
+  const add = (a: number, b: number) => a + b;
+
+  const memoizedCallback = useCallback(
+    (a) => {
+      add(a, b);
+    },
+    [b]
+  );
+  ```
+
+- useMemo
+  useMemo 和 useCallback 是非常类似的，但是它返回的是一个值，而不是函数。所以在定义 useMemo 时需要定义返回值的类型：
+
+```ts
+let a = 1;
+setTimeout(() => {
+  a += 1;
+}, 1000);
+
+const calculatedValue = useMemo<number>(() => a ** 2, [a]);
+```
+
+- useContext
+  useContext 需要提供一个上下文对象，并返回所提供的上下文的值，当提供者更新上下文对象时，引用这些上下文对象的组件就会重新渲染：
+
+```ts
+const ColorContext = React.createContext({ color: "green" });
+
+const Welcome = () => {
+  const { color } = useContext(ColorContext);
+  return <div style={{ color }}>hello world</div>;
+};
+```
+
+在使用 useContext 时，会自动推断出提供的上下文对象的类型，所以并不需要我们手动设置 context 的类型。当前，我们也可以使用泛型来设置 context 的类型：
+
+```ts
+interface IColor {
+  color: string;
+}
+
+const ColorContext = React.createContext<IColor>({ color: "green" });
+```
+
+- useReducer
+
+```ts
+const [state, dispatch] = useReducer(reducer, initialArg, init);
+```
+
+```ts
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 };
+    case "decrement":
+      return { count: state.count - 1 };
+    default:
+      throw new Error();
+  }
+};
+
+const Counter = () => {
+  const initialState = { count: 0 };
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <>
+      Count: {state.count}
+      <button onClick={() => dispatch({ type: "increment" })}>+</button>
+      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
+    </>
+  );
+};
+```

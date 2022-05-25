@@ -153,6 +153,13 @@ let strLength: number = (someValue as string).length;
 
 _注意_：react jsx 语法中只能使用第二种
 
+// 非空断言
+
+在上下文中当类型检查器无法断定类型时，一个新的后缀表达式操作符 ! 可以用于断言操作对象是非 null 和非 undefined 类型。具体而言，x! 将从 x 值域中排除 null 和 undefined 。
+
+// 确定赋值断言
+允许在实例属性和变量声明后面放置一个 ! 号，从而告诉 TypeScript 该属性会被明确地赋值
+
 ## 接口
 
 ```js
